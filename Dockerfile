@@ -52,9 +52,10 @@ RUN node -e " \
   let content = fs.readFileSync(file, 'utf8'); \
   \
   // 1. Fix SEND map in setDeviceState: use fn=2/4/6 for low/medium/high \
+  //    (SDK has 4-space indent before const) \
   content = content.replace( \
-    'const fanSpeedMap = { auto: 1, low: 3, medium: 5, high: 7, max: 8 }', \
-    'const fanSpeedMap = { auto: 1, low: 2, medium: 4, high: 6 }' \
+    '    const fanSpeedMap = { auto: 1, low: 3, medium: 5, high: 7, max: 8 }', \
+    '    const fanSpeedMap = { auto: 1, low: 2, medium: 4, high: 6 }' \
   ); \
   \
   // 2. Fix RECEIVE map in _processMqttMessage: add fn=2->low, fn=4->medium, fn=6->high \
