@@ -83,8 +83,18 @@ function buildFanModes(supportedCaps: SupportedCaps | undefined): MysaFanSpeedMo
   }
 
   const allSpeeds = new Set<number>();
+
+  // Check top-level fanSpeeds first (API returns this for CodeNum=1117 devices;
+  // not declared in the SDK TypeScript type but present at runtime)
+  const topLevelSpeeds = (supportedCaps as unknown as { fanSpeeds?: number[] }).fanSpeeds;
+  if (topLevelSpeeds) {
+    for (const speed of topLevelSpeeds) {
+      allSpeeds.add(speed);
+    }
+  }
+
+  // Also check per-mode fanSpeeds (future-proofing)
   for (const modeCaps of Object.values(supportedCaps.modes)) {
-    // fanSpeeds exists at runtime but is not declared in the SDK TypeScript type
     const fanSpeeds = (modeCaps as unknown as { fanSpeeds?: number[] }).fanSpeeds ?? [];
     for (const speed of fanSpeeds) {
       allSpeeds.add(speed);
