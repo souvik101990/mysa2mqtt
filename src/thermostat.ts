@@ -78,9 +78,6 @@ const MYSA_RAW_FAN_SPEED_TO_FAN_SPEED_MODE: Partial<Record<number, MysaFanSpeedM
  * - SupportedCaps present with fanSpeeds → expose exactly those speeds
  */
 function buildFanModes(supportedCaps: SupportedCaps | undefined): MysaFanSpeedMode[] {
-  // Debug: log full SupportedCaps structure to understand the API response format
-  console.error('[DEBUG buildFanModes] SupportedCaps:', JSON.stringify(supportedCaps));
-
   if (!supportedCaps?.modes) {
     return [...FAN_SPEED_MODES] as MysaFanSpeedMode[];
   }
