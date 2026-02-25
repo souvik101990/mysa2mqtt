@@ -58,10 +58,12 @@ const MYSA_RAW_MODE_TO_DEVICE_MODE: Partial<Record<number, MysaDeviceMode>> = {
 const FAN_SPEED_MODES: Partial<MysaFanSpeedMode>[] = ['auto', 'low', 'medium', 'high', 'max'];
 const MYSA_RAW_FAN_SPEED_TO_FAN_SPEED_MODE: Partial<Record<number, MysaFanSpeedMode>> = {
   1: 'auto',
-  2: 'low', // AC-V1-X devices echo fn=2 for any non-auto fan speed (device-side mapping)
-  3: 'low',
-  5: 'medium',
-  7: 'high',
+  2: 'low', // AC-V1-X CodeNum=1117 canonical low (also echoed for any non-auto on older firmware)
+  3: 'low', // SDK legacy value for low
+  4: 'medium', // AC-V1-X CodeNum=1117 canonical medium
+  5: 'medium', // SDK legacy value for medium
+  6: 'high', // AC-V1-X CodeNum=1117 canonical high
+  7: 'high', // SDK legacy value for high
   8: 'max'
 };
 
