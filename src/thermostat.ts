@@ -58,6 +58,7 @@ const MYSA_RAW_MODE_TO_DEVICE_MODE: Partial<Record<number, MysaDeviceMode>> = {
 const FAN_SPEED_MODES: Partial<MysaFanSpeedMode>[] = ['auto', 'low', 'medium', 'high', 'max'];
 const MYSA_RAW_FAN_SPEED_TO_FAN_SPEED_MODE: Partial<Record<number, MysaFanSpeedMode>> = {
   1: 'auto',
+  2: 'low', // AC-V1-X devices echo fn=2 for any non-auto fan speed (device-side mapping)
   3: 'low',
   5: 'medium',
   7: 'high',

@@ -43,6 +43,19 @@ RUN npm version ${VERSION} --no-git-tag-version && \
   npm ci --only=production --ignore-scripts && \
   npm cache clean --force
 
+# Patch mysa-js-sdk fanSpeedMap to include fn=2 (AC-V1-X devices echo fn=2 for all non-auto speeds)
+RUN node -e " \
+  const fs = require('fs'); \
+  const file = '/app/node_modules/mysa-js-sdk/dist/index.js'; \
+  let content = fs.readFileSync(file, 'utf8'); \
+  content = content.replace( \
+    '1: \"auto\",\n              3: \"low\",', \
+    '1: \"auto\",\n              2: \"low\",\n              3: \"low\",' \
+  ); \
+  fs.writeFileSync(file, content); \
+  console.log('SDK patched: added fn=2 -> low to fanSpeedMap'); \
+"
+
 # Copy built application
 COPY --from=builder /app/dist ./dist
 
