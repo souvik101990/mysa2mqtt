@@ -52,6 +52,10 @@ RUN node /tmp/patch-sdk.js
 # Copy built application
 COPY --from=builder /app/dist ./dist
 
+# Patch main.js: fix fan mode fallback for AC devices with missing fanSpeeds
+COPY patch-main.js /tmp/patch-main.js
+RUN node /tmp/patch-main.js
+
 # Change ownership to non-root user
 RUN chown -R mysa2mqtt:nodejs /app
 USER mysa2mqtt
