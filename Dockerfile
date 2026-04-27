@@ -31,6 +31,9 @@ LABEL org.opencontainers.image.licenses="MIT"
 # Install security updates
 RUN apk --no-cache upgrade
 
+# tini: proper PID 1 / signal handling for the supervisor wrapper below
+RUN apk --no-cache add tini
+
 WORKDIR /app
 
 # Create non-root user
@@ -60,4 +63,4 @@ RUN node /tmp/patch-main.js
 RUN chown -R mysa2mqtt:nodejs /app
 USER mysa2mqtt
 
-ENTRYPOINT ["node", "dist/main.js"]
+ENTRYPOINT ["/sbin/tini", "--", "/bin/sh", "-c", "while true; do echo \"[$(date -Iseconds)] mysa2mqtt-supervisor: starting\"; node /app/dist/main.js; rc=$?; echo \"[$(date -Iseconds)] mysa2mqtt-supervisor: exited rc=$rc, restart in 5s\"; sleep 5; done"]
